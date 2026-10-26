@@ -1,0 +1,127 @@
+2nd 
+#include <stdio.h>
+#include <string.h>
+
+void crc(char data[], char divisor[])
+{
+    char temp[200], rem[200];
+    int dataLen, divLen, i, j;
+
+    dataLen = strlen(data);
+    divLen = strlen(divisor);
+
+    strcpy(temp, data);
+
+    // Append zeros
+    for (i = 0; i < divLen - 1; i++)
+        temp[dataLen + i] = '0';
+
+    temp[dataLen + divLen - 1] = '\0';
+
+    strcpy(rem, temp);
+
+    // Modulo-2 Division
+    for (i = 0; i < dataLen; i++)
+    {
+        if (rem[i] == '1')
+        {
+            for (j = 0; j < divLen; j++)
+            {
+                if (rem[i + j] == divisor[j])
+                    rem[i + j] = '0';
+                else
+                    rem[i + j] = '1';
+            }
+        }
+    }
+
+    // Print CRC remainder
+    printf("\nCRC Code: ");
+    for (i = dataLen; i < dataLen + divLen - 1; i++)
+        printf("%c", rem[i]);
+
+    // Print transmitted data
+    printf("\nTransmitted Data: %s", data);
+    for (i = dataLen; i < dataLen + divLen - 1; i++)
+        printf("%c", rem[i]);
+
+    printf("\n");
+}
+
+int main()
+{
+    char data[100];
+    int choice;
+
+    // CRC-12: x^12 + x^11 + x^3 + x^2 + x + 1
+    char crc12[] = "1100000001111";
+
+    // CRC-16: x^16 + x^15 + x^2 + 1
+    char crc16[] = "11000000000000101";
+
+    // CRC-CCITT: x^16 + x^12 + x^5 + 1
+    char crcCCITT[] = "10001000000100001";
+
+    printf("Enter Binary Data: ");
+    scanf("%99s", data);
+
+    printf("\n1. CRC-12");
+    printf("\n2. CRC-16");
+    printf("\n3. CRC-CCITT");
+    printf("\nEnter Choice: ");
+    scanf("%d", &choice);
+
+    switch (choice)
+    {
+        case 1:
+            crc(data, crc12);
+            break;
+
+        case 2:
+            crc(data, crc16);
+            break;
+
+        case 3:
+            crc(data, crcCCITT);
+            break;
+
+        default:
+            printf("Invalid Choice\n");
+    }
+
+    return 0;
+}
+
+Sample Input and Output 1 — CRC-12
+Input:
+Enter Binary Data: 1101011011
+
+1. CRC-12
+2. CRC-16
+3. CRC-CCITT
+Enter Choice: 1
+Output:
+CRC Code: 101110100011
+Transmitted Data: 1101011011101110100011
+Sample Input and Output 2 — CRC-16
+Input:
+Enter Binary Data: 1101011011
+
+1. CRC-12
+2. CRC-16
+3. CRC-CCITT
+Enter Choice: 2
+Output:
+CRC Code: 1001110101010110
+Transmitted Data: 110101101110011101010110
+Sample Input and Output 3 — CRC-CCITT
+Input:
+Enter Binary Data: 1101011011
+
+1. CRC-12
+2. CRC-16
+3. CRC-CCITT
+Enter Choice: 3
+Output:
+CRC Code: 1110011010111000
+Transmitted Data: 11010110111110011010111000

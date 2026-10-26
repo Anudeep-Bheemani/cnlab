@@ -1,0 +1,102 @@
+1st exp
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char data[100], framed[300];
+    int choice, i, j, count;
+
+    do
+    {
+        printf("\n1. Character Count");
+        printf("\n2. Character Stuffing");
+        printf("\n3. Bit Stuffing");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter data: ");
+                scanf("%99s", data);
+
+                printf("Framed data: %d%s\n",
+                       (int)strlen(data) + 1, data);
+                break;
+
+            case 2:
+                printf("Enter data: ");
+                scanf("%99s", data);
+
+                j = 0;
+                framed[j++] = 'F';
+
+                for (i = 0; data[i] != '\0'; i++)
+                {
+                    if (data[i] == 'F' || data[i] == 'E')
+                        framed[j++] = 'E';
+
+                    framed[j++] = data[i];
+                }
+
+                framed[j++] = 'F';
+                framed[j] = '\0';
+
+                printf("Framed data: %s\n", framed);
+                break;
+
+            case 3:
+                printf("Enter binary data: ");
+                scanf("%99s", data);
+
+                j = 0;
+                count = 0;
+
+                for (i = 0; data[i] != '\0'; i++)
+                {
+                    if (data[i] != '0' && data[i] != '1')
+                    {
+                        printf("Invalid binary data!\n");
+                        break;
+                    }
+
+                    framed[j++] = data[i];
+
+                    if (data[i] == '1')
+                    {
+                        count++;
+
+                        if (count == 5)
+                        {
+                            framed[j++] = '0';
+                            count = 0;
+                        }
+                    }
+                    else
+                    {
+                        count = 0;
+                    }
+                }
+
+                if (data[i] == '\0')
+                {
+                    framed[j] = '\0';
+                    printf("Stuffed data: 01111110%s01111110\n",
+                           framed);
+                }
+                break;
+
+            case 4:
+                printf("Exiting program...\n");
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}

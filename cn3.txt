@@ -1,0 +1,87 @@
+3rd
+#include <stdio.h>
+
+int main()
+{
+    int n, w, base = 0, i, lost;
+
+    printf("Enter number of frames: ");
+    scanf("%d", &n);
+
+    printf("Enter window size: ");
+    scanf("%d", &w);
+
+    if (n <= 0 || w <= 0 || w > n)
+    {
+        printf("Invalid input\n");
+        return 1;
+    }
+
+    while (base < n)
+    {
+        int end = base + w;
+
+        if (end > n)
+            end = n;
+
+        printf("\nSending frames:\n");
+
+        for (i = base; i < end; i++)
+            printf("Frame %d sent\n", i);
+
+        printf("Enter lost frame number in this window (-1 for none): ");
+        scanf("%d", &lost);
+
+        if (lost >= base && lost < end)
+        {
+            printf("\nFrame %d lost!\n", lost);
+            printf("Receiver discards frames after the lost frame.\n");
+
+            printf("Retransmitting frames:\n");
+
+            for (i = lost; i < end; i++)
+                printf("Frame %d retransmitted\n", i);
+        }
+        else if (lost != -1)
+        {
+            printf("Invalid frame number. Assuming no loss.\n");
+        }
+
+        printf("Acknowledgements received for frames %d to %d\n",
+               base, end - 1);
+
+        base = end;
+    }
+
+    printf("\nAll frames transmitted successfully.\n");
+
+    return 0;
+}
+
+
+Enter number of frames: 8
+Enter window size: 4
+
+Sending frames:
+Frame 0 sent
+Frame 1 sent
+Frame 2 sent
+Frame 3 sent
+Enter lost frame number in this window (-1 for none): -1
+Acknowledgements received for frames 0 to 3
+
+Sending frames:
+Frame 4 sent
+Frame 5 sent
+Frame 6 sent
+Frame 7 sent
+Enter lost frame number in this window (-1 for none): 6
+
+Frame 6 lost!
+Receiver discards frames after the lost frame.
+Retransmitting frames:
+Frame 6 retransmitted
+Frame 7 retransmitted
+Acknowledgements received for frames 4 to 7
+
+All frames transmitted successfully.
